@@ -373,7 +373,7 @@
               <MiscControls></MiscControls>
               <Define>__MSP432P401R__</Define>
               <Undefine></Undefine>
-              <IncludePath>../../../../../../source;../../../../../../source/third_party/CMSIS/Include/;..\keil;.\driverlib</IncludePath>
+              <IncludePath>../../../../../../source;../../../../../../source/third_party/CMSIS/Include/;..\keil;.\driverlib;..\..\MspCar</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>

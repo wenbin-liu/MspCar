@@ -24,19 +24,19 @@ Timer_A_PWMConfig pwmConfigright=
 {
         TIMER_A_CLOCKSOURCE_SMCLK,
         TIMER_A_CLOCKSOURCE_DIVIDER_1,
-        32000,
+        3000,
         TIMER_A_CAPTURECOMPARE_REGISTER_3,
         TIMER_A_OUTPUTMODE_RESET_SET,
-        3200
+        1500
 };
 Timer_A_PWMConfig pwmConfigleft=
 {
         TIMER_A_CLOCKSOURCE_SMCLK,
         TIMER_A_CLOCKSOURCE_DIVIDER_1,
-        32000,
+        3000,
         TIMER_A_CAPTURECOMPARE_REGISTER_4,
         TIMER_A_OUTPUTMODE_RESET_SET,
-        3200
+        1500
 };
 
 void Motor_Init(void){
@@ -78,7 +78,7 @@ void Motor_Changespeed(int motor,int16_t duty)
 		 MAP_GPIO_setOutputLowOnPin(DIR_PORT, DIRR_PIN);
 		else
 			MAP_GPIO_setOutputHighOnPin(DIR_PORT, DIRR_PIN);
-		pwmConfigleft.dutyCycle=abs(duty);
+		pwmConfigright.dutyCycle=abs(duty);
 		MAP_Timer_A_generatePWM(TIMER_A0_BASE, &pwmConfigright);
 	}
 }
