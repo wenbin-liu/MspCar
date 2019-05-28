@@ -81,22 +81,10 @@ int main(void)
      * Setting SMCLK to 64Khz */
     MAP_CS_setReferenceOscillatorFrequency(CS_REFO_128KHZ);
     MAP_CS_initClockSignal(CS_MCLK, CS_REFOCLK_SELECT, CS_CLOCK_DIVIDER_1);
-    MAP_CS_initClockSignal(CS_SMCLK, CS_REFOCLK_SELECT, CS_CLOCK_DIVIDER_2);
+    MAP_CS_initClockSignal(CS_SMCLK, CS_DCOCLK_SELECT, CS_CLOCK_DIVIDER_1);
     MAP_PCM_setPowerState(PCM_AM_LF_VCORE0);
 
-    /* Configuring GPIO2.4 as peripheral output for PWM  and P6.7 for button
-     * interrupt */
-    //MAP_GPIO_setAsPeripheralModuleFunctionOutputPin(GPIO_PORT_P2, GPIO_PIN6, GPIO_PRIMARY_MODULE_FUNCTION);
-//    MAP_GPIO_setAsInputPinWithPullUpResistor(GPIO_PORT_P1, GPIO_PIN1);
-//    MAP_GPIO_clearInterruptFlag(GPIO_PORT_P1, GPIO_PIN1);
-//    MAP_GPIO_enableInterrupt(GPIO_PORT_P1, GPIO_PIN1);
 
-    /* Configuring Timer_A to have a period of approximately 500ms and
-     * an initial duty cycle of 10% of that (3200 ticks)  */
-    //MAP_Timer_A_generatePWM(TIMER_A0_BASE, &pwmConfig);
-    //![Simple Timer_A Example]
-
-    /* Enabling interrupts and starting the watchdog timer */
 
 		
 		
@@ -104,12 +92,15 @@ int main(void)
 		Motor_Init();
 
 Motor_Ena();
+Motor_Changespeed(LEFTMOTOR,700);
+
+Motor_Changespeed(RIGHTMOTOR,700);
     /* Sleeping when not in use */
     while (1)
     {
       //MAP_PCM_gotoLPM0();
         
-			  Motor_Changespeed(LEFTMOTOR,16000);
+			 //
     }
 }
 
