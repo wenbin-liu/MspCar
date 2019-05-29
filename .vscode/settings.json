@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "irremote.h": "c",
+        "driverlib.h": "c"
+    }
+}

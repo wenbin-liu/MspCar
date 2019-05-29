@@ -23,7 +23,7 @@ int abs(int a )
 Timer_A_PWMConfig pwmConfigright=
 {
         TIMER_A_CLOCKSOURCE_SMCLK,
-        TIMER_A_CLOCKSOURCE_DIVIDER_1,
+        TIMER_A_CLOCKSOURCE_DIVIDER_16,
         3000,
         TIMER_A_CAPTURECOMPARE_REGISTER_3,
         TIMER_A_OUTPUTMODE_RESET_SET,
@@ -32,7 +32,7 @@ Timer_A_PWMConfig pwmConfigright=
 Timer_A_PWMConfig pwmConfigleft=
 {
         TIMER_A_CLOCKSOURCE_SMCLK,
-        TIMER_A_CLOCKSOURCE_DIVIDER_1,
+        TIMER_A_CLOCKSOURCE_DIVIDER_16,
         3000,
         TIMER_A_CAPTURECOMPARE_REGISTER_4,
         TIMER_A_OUTPUTMODE_RESET_SET,

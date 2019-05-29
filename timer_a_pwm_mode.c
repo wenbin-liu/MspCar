@@ -56,7 +56,10 @@
 /* Standard Includes */
 #include <stdint.h>
 #include <stdbool.h>
+#include "stdio.h"
 #include "motor.h"
+#include "IRremote.h"
+#include "uart_init.h"
 
 //![Simple Timer_A Config]
 /* Timer_A PWM Configuration Parameter */
@@ -82,25 +85,27 @@ int main(void)
     MAP_CS_setReferenceOscillatorFrequency(CS_REFO_128KHZ);
     MAP_CS_initClockSignal(CS_MCLK, CS_REFOCLK_SELECT, CS_CLOCK_DIVIDER_1);
     MAP_CS_initClockSignal(CS_SMCLK, CS_DCOCLK_SELECT, CS_CLOCK_DIVIDER_1);
-    MAP_PCM_setPowerState(PCM_AM_LF_VCORE0);
 
 
 
 		
 		
-		
-		Motor_Init();
+//		Motor  Initialization
+	Motor_Init();
+	Motor_Ena();
+	Motor_Changespeed(LEFTMOTOR,0);
+	Motor_Changespeed(RIGHTMOTOR,0);
 
-Motor_Ena();
-Motor_Changespeed(LEFTMOTOR,700);
+//IR remote controller initialization
+	IR_Init();
 
-Motor_Changespeed(RIGHTMOTOR,700);
-    /* Sleeping when not in use */
+	UART_Init();
     while (1)
     {
       //MAP_PCM_gotoLPM0();
         
 			 //
+//        MAP_UART_transmitData(EUSCI_A0_BASE, MAP_UART_receiveData(EUSCI_A0_BASE));
     }
 }
 

@@ -26,6 +26,11 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>IRremote.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/user/src/IRremote.c</locationURI>
+		</link>
+		<link>
 			<name>motor.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/user/src/motor.c</locationURI>
@@ -39,6 +44,11 @@
 			<name>timer_a_pwm_mode.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/timer_a_pwm_mode.c</locationURI>
+		</link>
+		<link>
+			<name>uart_init.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/user/src/uart_init.c</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>
