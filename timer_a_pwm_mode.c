@@ -73,6 +73,8 @@
         3200
 };*/
 //![Simple Timer_A Config]
+extern uint8_t IR_Code_Recv;
+extern uint8_t IR_Recv_Flag;
 
 int main(void)
 {
@@ -100,9 +102,40 @@ int main(void)
 	IR_Init();
 
 	UART_Init();
+
+	int pwmL = 0 ,pwmR = 0;
     while (1)
     {
       //MAP_PCM_gotoLPM0();
+        if(IR_Recv_Flag == 1)
+        {
+            switch(IR_Code_Recv)
+            {
+            case KEY_CH:    pwmR+=800;
+                            pwmL+=800;
+                            break;
+            case KEY_VOL_P: pwmR-=800;
+                            pwmL-=800;
+                            break;
+            case KEY_PREV: pwmL-=400;
+                            pwmR+=400;
+                            break;
+            case KEY_PLAY: pwmL+=400;
+                            pwmR-=400;
+                            break;
+            default:        pwmL=0;
+                            pwmR=0;
+
+            }
+            IR_Recv_Flag =0;
+            pwmL = pwmL > 3000? 3000:pwmL;
+            pwmR = pwmR > 3000? 3000:pwmR;
+            pwmL = pwmL < -3000? -3000:pwmL;
+            pwmR = pwmR < -3000? -3000:pwmR;
+            Motor_Changespeed(LEFTMOTOR,pwmL);
+            Motor_Changespeed(RIGHTMOTOR,pwmR);
+        }
+
         
 			 //
 //        MAP_UART_transmitData(EUSCI_A0_BASE, MAP_UART_receiveData(EUSCI_A0_BASE));

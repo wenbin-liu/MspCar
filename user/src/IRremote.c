@@ -17,7 +17,9 @@
 #define BIT0_MAX 4000
 #define BIT1_MIN 6000
 #define BIT1_MAX 7000
-#define START_MIN 35000
+#define START_MIN 12000
+
+
 typedef enum
 {
     IR_IDLE,
@@ -71,11 +73,13 @@ void IR_Init()
 }
 
 static uint16_t timerAcaptureValues[NUMBER_TIMER_CAPTURES];
-uint8_t code;
+uint8_t IR_Code_Recv;
+uint8_t IR_Recv_Flag = 0;
 void TA2_N_IRQHandler(void)
 {
     static uint32_t timerAcapturePointer = 0;
     static uint16_t counterVal,lastCounterVal;
+    static uint16_t deltaVal;
 
     MAP_Timer_A_clearCaptureCompareInterrupt(TIMER_A2_BASE,
             TIMER_A_CAPTURECOMPARE_REGISTER_2);
@@ -87,7 +91,13 @@ void TA2_N_IRQHandler(void)
 
     if(timerAcapturePointer != 0)
     {
-            timerAcaptureValues[timerAcapturePointer-1] =counterVal-lastCounterVal;
+            deltaVal = counterVal-lastCounterVal;
+            if(deltaVal > START_MIN)
+            {
+                timerAcapturePointer = 1;
+            }
+            timerAcaptureValues[timerAcapturePointer-1] = deltaVal;
+
     }
 
     lastCounterVal = counterVal;
@@ -96,14 +106,19 @@ void TA2_N_IRQHandler(void)
 
     if (timerAcapturePointer >= NUMBER_TIMER_CAPTURES)
     {
-        for(;timerAcapturePointer>1;timerAcapturePointer--)
+
+        for(int i = 17;i <25;i++ )
         {
-            timerAcaptureValues[timerAcapturePointer-1] -= timerAcaptureValues[timerAcapturePointer-2];
+            IR_Code_Recv = IR_Code_Recv << 1;
+            if(timerAcaptureValues[i] > 5000)
+                IR_Code_Recv |= 0x01;
         }
         timerAcapturePointer = 0;
+        IR_Recv_Flag = 1;
 
-        for(int i=1; i<34 ;i++)
-            printf("%d\n",timerAcaptureValues[i]);
+            printf("%d\n",IR_Code_Recv);
 
     }
+
+
 }
