@@ -116,7 +116,7 @@ void TA2_N_IRQHandler(void)
         timerAcapturePointer = 0;
         IR_Recv_Flag = 1;
 
-            printf("%d\n",IR_Code_Recv);
+           // printf("%d\n",IR_Code_Recv);
 
     }
 

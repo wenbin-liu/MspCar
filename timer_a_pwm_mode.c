@@ -87,6 +87,7 @@ int main(void)
     MAP_CS_setReferenceOscillatorFrequency(CS_REFO_128KHZ);
     MAP_CS_initClockSignal(CS_MCLK, CS_REFOCLK_SELECT, CS_CLOCK_DIVIDER_1);
     MAP_CS_initClockSignal(CS_SMCLK, CS_DCOCLK_SELECT, CS_CLOCK_DIVIDER_1);
+    MAP_PCM_setPowerState(PCM_AM_DCDC_VCORE1);
 
 
 
@@ -103,38 +104,38 @@ int main(void)
 
 	UART_Init();
 
-	int pwmL = 0 ,pwmR = 0;
+	int pwmL =1000 ,pwmR = 1000;
+
     while (1)
     {
-      //MAP_PCM_gotoLPM0();
-        if(IR_Recv_Flag == 1)
-        {
-            switch(IR_Code_Recv)
-            {
-            case KEY_CH:    pwmR+=800;
-                            pwmL+=800;
-                            break;
-            case KEY_VOL_P: pwmR-=800;
-                            pwmL-=800;
-                            break;
-            case KEY_PREV: pwmL-=400;
-                            pwmR+=400;
-                            break;
-            case KEY_PLAY: pwmL+=400;
-                            pwmR-=400;
-                            break;
-            default:        pwmL=0;
-                            pwmR=0;
+       if(IR_Recv_Flag == 1)
+       {
+           switch(IR_Code_Recv)
+           {
+           case KEY_CH:    pwmR+=800;
+                           pwmL+=800;
+                           break;
+           case KEY_VOL_P: pwmR-=800;
+                           pwmL-=800;
+                           break;
+           case KEY_PREV: pwmL-=400;
+                           pwmR+=400;
+                           break;
+           case KEY_PLAY: pwmL+=400;
+                           pwmR-=400;
+                           break;
+           default:        pwmL=0;
+                           pwmR=0;
 
-            }
-            IR_Recv_Flag =0;
-            pwmL = pwmL > 3000? 3000:pwmL;
-            pwmR = pwmR > 3000? 3000:pwmR;
-            pwmL = pwmL < -3000? -3000:pwmL;
-            pwmR = pwmR < -3000? -3000:pwmR;
-            Motor_Changespeed(LEFTMOTOR,pwmL);
-            Motor_Changespeed(RIGHTMOTOR,pwmR);
-        }
+           }
+           IR_Recv_Flag =0;
+           pwmL = pwmL > 3000? 3000:pwmL;
+           pwmR = pwmR > 3000? 3000:pwmR;
+           pwmL = pwmL < -3000? -3000:pwmL;
+           pwmR = pwmR < -3000? -3000:pwmR;
+           Motor_Changespeed(LEFTMOTOR,pwmL);
+           Motor_Changespeed(RIGHTMOTOR,pwmR);
+       }
 
         
 			 //
