@@ -432,11 +432,6 @@
               <FilePath>startup_msp432p401r_uvision.s</FilePath>
             </File>
             <File>
-              <FileName>motor.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\motor.c</FilePath>
-            </File>
-            <File>
               <FileName>IRremote.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\user\src\IRremote.c</FilePath>
@@ -445,6 +440,11 @@
               <FileName>uart_init.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\user\src\uart_init.c</FilePath>
+            </File>
+            <File>
+              <FileName>motor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\user\src\motor.c</FilePath>
             </File>
           </Files>
         </Group>
