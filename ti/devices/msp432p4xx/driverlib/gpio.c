@@ -199,6 +199,9 @@ uint8_t GPIO_getInputPinValue(uint_fast8_t selectedPort,
 
     inputPinValue = HWREG16(baseAddress + OFS_LIB_PAIN) & (selectedPins);
 
+	
+	
+	 // return inputPinValue;
     if (inputPinValue > 0)
         return GPIO_INPUT_PIN_HIGH;
     return GPIO_INPUT_PIN_LOW;
