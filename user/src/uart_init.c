@@ -50,3 +50,14 @@ int _write (int fd, char *pBuffer, int size)
       return size;
   }
 #endif
+#ifdef __CC_ARM
+
+int fputc(int c , FILE *fp)
+{
+    MAP_UART_transmitData(EUSCI_A0_BASE, c);
+    return c;
+
+}
+
+
+#endif

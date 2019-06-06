@@ -12,6 +12,7 @@
 extern uint8_t IR_Code_Recv;
 extern uint8_t IR_Recv_Flag;
 
+
 uint32_t count=0,Timer_10ms=0;
 void SysTick_Callback(void)
 {
@@ -34,6 +35,7 @@ uint32_t clk=0;
 int main(void)
 {
     /* Halting the watchdog */
+    uint8_t linePatrol = 0;
   MAP_WDT_A_holdTimer();
 
   MAP_CS_setReferenceOscillatorFrequency(CS_REFO_128KHZ);
@@ -61,7 +63,11 @@ int main(void)
 int pwmL =0 ,pwmR = 0;
 
     while (1)
-    {			
+    {	
+
+			if(linePatrol)
+			{
+
 			P5->OUT|=0x08;
 			P7->DIR=0XFF;
 			P7->OUT=0XFF;
@@ -75,52 +81,53 @@ int pwmL =0 ,pwmR = 0;
 			temp=P7->IN;
 			
 	
-		/*¸ù¾İ¹âµç¹ÜÕóÁĞÇóÈ¡Æ«²î*/
-		  if(temp==24)   Array_Bias=0  ;  //Ö±ĞĞ
-      else if(temp>0&&temp<24)    Array_Bias=-24.0/(float)temp;  //ÓÒ×ª
-			else if(temp>24 &&temp<=192)    Array_Bias=(float)temp/24.0;  //×ó×ª
+		/*æ ¹æ®å…‰ç”µç®¡é˜µåˆ—æ±‚å–åå·®*/
+		  if(temp==24)   Array_Bias=0  ;  //ç›´è¡Œ
+      else if(temp>0&&temp<24)    Array_Bias=-24.0/(float)temp;  //å³è½¬
+			else if(temp>24 &&temp<=192)    Array_Bias=(float)temp/24.0;  //å·¦è½¬
 		   
 
-      if (  !(Bump_Value[0]||Bump_Value[1]||Bump_Value[2]||Bump_Value[3]||Bump_Value[4]||Bump_Value[5])) //·ÇÕÏ°­
+      if (  !(Bump_Value[0]||Bump_Value[1]||Bump_Value[2]||Bump_Value[3]||Bump_Value[4]||Bump_Value[5])) //ééšœç¢
 			{
 				pwmL=1000+Turn_PWM;
 				pwmR=1000-Turn_PWM;
 			}
-#if 1
-		/*ÕÏ°­Ëã·¨*/
-	  if(Bump_Value[0]&&Bump_Value_Flag[0]==0)    //×ó±ßÓĞÕÏ°­£¬ÓÒµ¹³µÒ»¶ÎÊ±¼ä
+
+		/*éšœç¢ç®—æ³•*/
+	  if(Bump_Value[0]&&Bump_Value_Flag[0]==0)    //å·¦è¾¹æœ‰éšœç¢ï¼Œå³å€’è½¦ä¸€æ®µæ—¶é—´
        {  Timer_10ms=0; Bump_Value_Flag[0]=1;
 				  pwmL= 0; pwmR=-1200;   
 			 }               			 
-		if(Bump_Value[2]&&Bump_Value_Flag[2]==0)	//ÕıÇ°·½ÓĞÕÏ°­
+		if(Bump_Value[2]&&Bump_Value_Flag[2]==0)	//æ­£å‰æ–¹æœ‰éšœç¢
 			{
 					Timer_10ms=0; Bump_Value_Flag[2]=1;
 				  pwmL= -400; pwmR=-1200;    
 			}  
-		if(Bump_Value[3]&&Bump_Value_Flag[3]==0)	//ÕıÇ°·½ÓĞÕÏ°­
+		if(Bump_Value[3]&&Bump_Value_Flag[3]==0)	//æ­£å‰æ–¹æœ‰éšœç¢
 			{
 					Timer_10ms=0; Bump_Value_Flag[3]=1;
 				  pwmL= -1200; pwmR=-400;    
 			}  			
-		if(Bump_Value[5]&&Bump_Value_Flag[5]==0)  //ÓÒ±ßÓĞÕÏ°­
+		if(Bump_Value[5]&&Bump_Value_Flag[5]==0)  //å³è¾¹æœ‰éšœç¢
 			{
 					Timer_10ms=0; Bump_Value_Flag[5]=1;
 				  pwmL= -1200; pwmR=0;    		
 			}   
-  if(Timer_10ms>100&&(Bump_Value[0]||Bump_Value[2]||Bump_Value[3]||Bump_Value[5])) //1sºóÇåÁã 			 
+		if(Timer_10ms>100&&(Bump_Value[0]||Bump_Value[2]||Bump_Value[3]||Bump_Value[5])) //1såæ¸…é›¶ 			 
 	  {
 		   for(int i=0;i<6;i++)  	
-          {Bump_Value[i]=0; }//ÕÏ°­´¦Àí½áÊø£¬±êÖ¾ÇåÁã		
+          {Bump_Value[i]=0; }//éšœç¢å¤„ç†ç»“æŸï¼Œæ ‡å¿—æ¸…é›¶		
 				Bump_Value_Flag[0]=0;Bump_Value_Flag[2]=0;Bump_Value_Flag[3]=0;Bump_Value_Flag[5]=0;				
 				pwmL=1000; pwmR=1000;   
 		}
 		
 		
+							 Motor_Changespeed(LEFTMOTOR,pwmL);
+           Motor_Changespeed(RIGHTMOTOR,pwmR);
 		
 		
-			
-#endif		
-/**********************ºìÍâÒ£¿Ø**************************/
+	}
+/**********************çº¢å¤–é¥æ§**************************/
 		
        if(IR_Recv_Flag == 1)
        {			 
@@ -138,6 +145,9 @@ int pwmL =0 ,pwmR = 0;
            case KEY_PLAY: pwmL+=400;
                            pwmR-=400;
                            break;
+            case KEY_EQ:
+                        linePatrol = ~linePatrol;
+                        break;
            default:        pwmL=0;
                            pwmR=0;
            }
@@ -146,6 +156,9 @@ int pwmL =0 ,pwmR = 0;
            pwmR = pwmR > 3000? 3000:pwmR;
            pwmL = pwmL < -3000? -3000:pwmL;
            pwmR = pwmR < -3000? -3000:pwmR;
+					 
+					 Motor_Changespeed(LEFTMOTOR,pwmL);
+           Motor_Changespeed(RIGHTMOTOR,pwmR);
        }
 
 
@@ -156,8 +169,7 @@ int pwmL =0 ,pwmR = 0;
 				if(pwmR>2500)  pwmR=2500;
 				else if(pwmR<-2500) pwmR=-2500;
    
-           Motor_Changespeed(LEFTMOTOR,pwmL);
-           Motor_Changespeed(RIGHTMOTOR,pwmR);
+
     }
 }
 

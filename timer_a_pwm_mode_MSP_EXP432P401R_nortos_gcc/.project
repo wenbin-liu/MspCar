@@ -26,6 +26,16 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>Array_And_BumpSw.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/user/src/Array_And_BumpSw.c</locationURI>
+		</link>
+		<link>
+			<name>Control.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/user/src/Control.c</locationURI>
+		</link>
+		<link>
 			<name>IRremote.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/user/src/IRremote.c</locationURI>
